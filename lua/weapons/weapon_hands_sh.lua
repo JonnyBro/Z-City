@@ -848,7 +848,7 @@ function SWEP:ApplyForce()
 
 		return
 	end
-	
+
 	if IsValid(phys) then
 		local TargetPos = phys:GetPos()
 
@@ -926,14 +926,14 @@ function SWEP:ApplyForce()
 				if not ply2.noHead and ply2.organism then
 
 					if ply2.organism.CantCheckPulse then
-						--ply:ChatPrint("The armor is too thick to feel the pulse.")
+						ply:ChatPrint("The armor is too thick to feel the pulse.")
 					elseif ((bone == "ValveBiped.Bip01_L_Hand") or (bone == "ValveBiped.Bip01_R_Hand") or (bone == "ValveBiped.Bip01_Head1")) then
 						local org = ply2.organism
 
 						if org.heartstop then
-							--ply:ChatPrint("No pulse.")
+							ply:ChatPrint("No pulse...")
 						else
-							--ply:ChatPrint(org.pulse < 20 and "Barely can feel the pulse." or (org.pulse <= 50 and "Low pulse.") or (org.pulse <= 90 and "Normal pulse.") or "High pulse.")
+							ply:ChatPrint(org.pulse < 20 and "Barely can feel the pulse." or (org.pulse <= 50 and "Low pulse.") or (org.pulse <= 90 and "Normal pulse.") or "High pulse.")
 						end
 
 						if (org.last_heartbeat + 60) > CurTime() then
@@ -1629,7 +1629,7 @@ function SWEP:AttackFront(special_attack, rand)
 		end
 
 		Mul = Mul * self:BlockingLogic(Ent, Mul, 0, trace)
-		
+
 		local glass = false
 		if string.find(Ent:GetClass(), "break") and Ent:GetBrushSurfaces()[1] and string.find(Ent:GetBrushSurfaces()[1]:GetMaterial():GetName(), "glass") then
 			glass = true
@@ -1829,22 +1829,22 @@ if SERVER then
 			local target,_ = LocalToWorld(target,angle_zero,ply:EyePos(),(ent.rememberedang or ply:EyeAngles()) - (not ply:KeyDown(IN_USE) and ent.addang or ent.oldaddang or angle_zero))
 			local vec = target - TargetPos
 			local len, mul = vec:Length(), phys:GetMass()
-	
+
 			vec:Normalize()
-	
+
 			if (ply.organism and ply.organism.superfighter) then
 				mul = mul * 5
 			end
-	
+
 			if (ply.organism and ply:IsBerserk()) then
 				mul = mul * (1 + ply.organism.berserk / 5)
 			end
-	
+
 			local avec = vec * len * 8 - phys:GetVelocity()
-	
+
 			local Force = avec * mul
 			local ForceMagnitude = math.min(Force:Length(), 3000) * (1 / math.max(phys:GetVelocity():Dot(vec) / 25, 1))
-	
+
 			Force = Force:GetNormalized() * ForceMagnitude
 
 			phys:Wake()
@@ -1852,10 +1852,10 @@ if SERVER then
 			if len > 100 then
 				hg.SetCarryEnt2(ply)
 				heldents[i] = nil
-				
+
 				continue
 			end
-	
+
 			ent:SetPhysicsAttacker(ply, 15)
 
 			Force = Force:GetNormalized() * ForceMagnitude
@@ -1884,7 +1884,7 @@ if SERVER then
 
 			if wep.GetCarrying and ply:KeyDown(IN_ATTACK) then
 				phys:ApplyForceCenter(ply:GetAimVector() * math.min(5000, phys:GetMass() * 800))
-				
+
 				hg.SetCarryEnt2(ply)
 				heldents[i] = nil
 			end
